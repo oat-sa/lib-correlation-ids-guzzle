@@ -18,7 +18,7 @@
  */
 namespace OAT\Library\CorrelationIdsGuzzle\Tests\Unit\Factory;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
 use OAT\Library\CorrelationIdsGuzzle\Factory\GuzzleClientFactory;
 use OAT\Library\CorrelationIdsGuzzle\Middleware\CorrelationIdsGuzzleMiddleware;
@@ -44,7 +44,7 @@ class GuzzleClientFactoryTest extends TestCase
     {
         $result = $this->subject->create(['handler' => HandlerStack::create()]);
 
-        $this->assertInstanceOf(Client::class, $result);
+        $this->assertInstanceOf(ClientInterface::class, $result);
 
         $this->assertStringContainsString(
             CorrelationIdsGuzzleMiddleware::class,
@@ -56,7 +56,7 @@ class GuzzleClientFactoryTest extends TestCase
     {
         $result = $this->subject->create();
 
-        $this->assertInstanceOf(Client::class, $result);
+        $this->assertInstanceOf(ClientInterface::class, $result);
 
         $this->assertStringContainsString(
             CorrelationIdsGuzzleMiddleware::class,
