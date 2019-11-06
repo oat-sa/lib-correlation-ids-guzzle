@@ -19,6 +19,7 @@
 namespace OAT\Library\CorrelationIdsGuzzle\Factory;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use OAT\Library\CorrelationIdsGuzzle\Middleware\CorrelationIdsGuzzleMiddleware;
@@ -33,7 +34,7 @@ class GuzzleClientFactory
         $this->middleware = $middleware;
     }
 
-    public function create(array $configuration = []): Client
+    public function create(array $configuration = []): ClientInterface
     {
         $configuration['handler'] = $this->pushMiddleware($configuration['handler'] ?? HandlerStack::create());
 
