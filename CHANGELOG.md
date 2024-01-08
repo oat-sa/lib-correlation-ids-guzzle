@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.3.0
+-----
+
+* Guzzle 7.x support
+
 0.2.0
 -----
 
