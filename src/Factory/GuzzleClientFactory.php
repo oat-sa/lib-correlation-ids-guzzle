@@ -36,7 +36,11 @@ class GuzzleClientFactory
 
     public function create(array $configuration = []): ClientInterface
     {
-        $configuration['handler'] = $this->pushMiddleware($configuration['handler'] ?? HandlerStack::create());
+        $handler = $configuration['handler'] ?? HandlerStack::create();
+        if (!$handler instanceof HandlerStack) {
+            $handler = HandlerStack::create();
+        }
+        $configuration['handler'] = $this->pushMiddleware($handler);
 
         return new Client($configuration);
     }

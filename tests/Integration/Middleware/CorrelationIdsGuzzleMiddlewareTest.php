@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,6 +17,9 @@
  *
  * Copyright (c) 2019 (original work) Open Assessment Technologies SA;
  */
+
+declare(strict_types=1);
+
 namespace OAT\Library\CorrelationIdsGuzzle\Tests\Integration\Middleware;
 
 use GuzzleHttp\Client;
@@ -87,15 +91,11 @@ class CorrelationIdsGuzzleMiddlewareTest extends TestCase
 
         $executedRequestHeaders = current($this->history)['request']->getHeaders();
 
-        $this->assertEquals(
-            ['current'],
-            $executedRequestHeaders[CorrelationIdsHeaderNamesProviderInterface::DEFAULT_PARENT_CORRELATION_ID_HEADER_NAME]
-        );
+        $parentHeaderName = CorrelationIdsHeaderNamesProviderInterface::DEFAULT_PARENT_CORRELATION_ID_HEADER_NAME;
+        $rootHeaderName = CorrelationIdsHeaderNamesProviderInterface::DEFAULT_ROOT_CORRELATION_ID_HEADER_NAME;
 
-        $this->assertEquals(
-            ['root'],
-            $executedRequestHeaders[CorrelationIdsHeaderNamesProviderInterface::DEFAULT_ROOT_CORRELATION_ID_HEADER_NAME]
-        );
+        $this->assertEquals(['current'], $executedRequestHeaders[$parentHeaderName]);
+        $this->assertEquals(['root'], $executedRequestHeaders[$rootHeaderName]);
     }
 
     private function prepareTestGuzzleClient(array $expectedResponses): Client

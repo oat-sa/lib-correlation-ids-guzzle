@@ -18,26 +18,25 @@
  */
 namespace OAT\Library\CorrelationIdsGuzzle\Tests\Unit\Factory;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
 use OAT\Library\CorrelationIdsGuzzle\Factory\GuzzleClientFactory;
 use OAT\Library\CorrelationIdsGuzzle\Middleware\CorrelationIdsGuzzleMiddleware;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class GuzzleClientFactoryTest extends TestCase
 {
-    /** @var CorrelationIdsGuzzleMiddleware|MockObject */
-    private $middlewareMock;
-
     /** @var GuzzleClientFactory */
     private $subject;
 
     protected function setUp(): void
     {
-        $this->middlewareMock = $this->createMock(CorrelationIdsGuzzleMiddleware::class);
+        /** @var CorrelationIdsGuzzleMiddleware&\PHPUnit\Framework\MockObject\MockObject $middleware */
+        $middleware = $this->createMock(CorrelationIdsGuzzleMiddleware::class);
 
-        $this->subject = new GuzzleClientFactory($this->middlewareMock);
+        /** @phan-suppress-next-line PhanTypeMismatchArgument */
+        $this->subject = new GuzzleClientFactory($middleware);
     }
 
     public function testItCanCreateAGuzzleClientAndReuseProvidedHandlerStackWithTheMiddlewareEnabled(): void
@@ -45,9 +44,11 @@ class GuzzleClientFactoryTest extends TestCase
         $result = $this->subject->create(['handler' => HandlerStack::create()]);
 
         $this->assertInstanceOf(ClientInterface::class, $result);
+        $this->assertInstanceOf(Client::class, $result);
 
         $this->assertStringContainsString(
             CorrelationIdsGuzzleMiddleware::class,
+            /** @phan-suppress-next-line PhanDeprecatedFunction */
             $result->getConfig('handler')->__toString()
         );
     }
@@ -57,9 +58,11 @@ class GuzzleClientFactoryTest extends TestCase
         $result = $this->subject->create();
 
         $this->assertInstanceOf(ClientInterface::class, $result);
+        $this->assertInstanceOf(Client::class, $result);
 
         $this->assertStringContainsString(
             CorrelationIdsGuzzleMiddleware::class,
+            /** @phan-suppress-next-line PhanDeprecatedFunction */
             $result->getConfig('handler')->__toString()
         );
     }
