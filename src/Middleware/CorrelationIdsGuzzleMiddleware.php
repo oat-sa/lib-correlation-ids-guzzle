@@ -33,7 +33,7 @@ class CorrelationIdsGuzzleMiddleware
 
     public function __construct(
         CorrelationIdsRegistryInterface $registry,
-        CorrelationIdsHeaderNamesProviderInterface $provider = null
+        ?CorrelationIdsHeaderNamesProviderInterface $provider = null
     ) {
         $this->registry = $registry;
         $this->provider = $provider ?? new CorrelationIdsHeaderNamesProvider();
